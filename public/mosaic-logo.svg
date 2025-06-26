@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2D3FE7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#5D6BFF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect x="10" y="10" width="180" height="180" rx="40" ry="40" fill="url(#logoGradient)" />
+  
+  <g transform="translate(50, 50) scale(0.6)">
+    <path d="M50 0L100 50L50 100L0 50Z" fill="white" />
+    <path d="M50 0L100 50L50 100Z" fill="rgba(255,255,255,0.7)" />
+    <path d="M0 50L50 0L50 100Z" fill="rgba(255,255,255,0.5)" />
+  </g>
+</svg>

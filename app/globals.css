@@ -1,0 +1,318 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* MultiversX theme colors */
+.bg-multiversx-primary {
+  background-color: #3366FF;
+}
+.text-multiversx-primary {
+  color: #3366FF;
+}
+.hover\:bg-multiversx-primary\/90:hover {
+  background-color: rgba(51, 102, 255, 0.9);
+}
+.border-multiversx-primary {
+  border-color: #3366FF;
+}
+
+/* Custom syntax highlighting for MultiversX Rust contracts */
+.token.comment { 
+  color: #718096; 
+  font-style: italic;
+}
+
+.token.string { 
+  color: #4FD1C5; 
+}
+
+.token.keyword { 
+  color: #63B3ED; 
+  font-weight: 600;
+}
+
+.token.function { 
+  color: #B794F4; 
+}
+
+.token.operator {
+  color: #F687B3;
+}
+
+.token.punctuation {
+  color: #CBD5E0;
+}
+
+.token.number {
+  color: #F6AD55;
+}
+
+.token.boolean {
+  color: #F687B3;
+}
+
+.token.macro {
+  color: #F687B3;
+  font-weight: 600;
+}
+
+.token.attribute {
+  color: #F6AD55;
+}
+
+.token.type {
+  color: #9AE6B4;
+}
+
+@layer base {
+  :root {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 199 89% 48%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 224 76% 48%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 199 89% 48%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 224 76% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Code blocks styling */
+pre {
+  margin: 0;
+  padding: 1.25rem;
+  overflow: auto;
+  background-color: #1a1d29;
+  border-radius: 0.5rem;
+  font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+code {
+  font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+/* Line numbers styling */
+code.line-numbers {
+  counter-reset: line;
+}
+
+code.line-numbers .line-number {
+  counter-increment: line;
+  display: inline-block;
+  width: 3em;
+  color: #718096;
+  text-align: right;
+  margin-right: 1em;
+  padding-right: 0.5em;
+  border-right: 1px solid #2D3748;
+  user-select: none;
+}
+
+/* MultiversX specific custom styling */
+@layer components {
+  .elrond-card {
+    @apply bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl shadow-lg;
+  }
+
+  .multiversx-glow {
+    @apply relative;
+  }
+
+  .multiversx-glow::before {
+    content: '';
+    @apply absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-blue-400 rounded-lg blur opacity-30 transition duration-1000;
+  }
+
+  .multiversx-glow:hover::before {
+    @apply opacity-50;
+  }
+
+  /* Custom button styles */
+  .btn-multiversx-primary {
+    @apply bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors;
+  }
+
+  .btn-multiversx-secondary {
+    @apply bg-slate-800 hover:bg-slate-700 border border-blue-500 text-white px-4 py-2 rounded-lg transition-colors;
+  }
+
+  /* Component styles */
+  .component-card {
+    @apply bg-slate-800 border border-slate-700 rounded-lg p-4 hover:border-blue-500 transition-colors duration-200;
+  }
+}
+
+/* Enhanced card effects */
+.multiversx-card {
+  @apply bg-gradient-to-br from-gray-900 to-gray-800 border border-blue-500/20 rounded-xl shadow-lg;
+  transition: all 0.3s ease;
+}
+.multiversx-card:hover {
+  @apply border-blue-500/50 shadow-xl shadow-blue-600/10;
+  transform: translateY(-2px);
+}
+
+/* Glow effects for buttons and inputs */
+.input-glow:focus {
+  box-shadow: 0 0 0 2px rgba(51, 102, 255, 0.2);
+}
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+}
+.btn-glow::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(51, 102, 255, 0.4) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.btn-glow:hover::after {
+  opacity: 1;
+}
+
+/* Custom animations */
+@keyframes pulse-blue {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+.animate-pulse-blue {
+  animation: pulse-blue 3s infinite;
+}
+
+/* Enhanced scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #1a1d29;
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #3366FF;
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #5580FF;
+}
+
+/* Animation for contract deployment */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(51, 102, 255, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(51, 102, 255, 0.8);
+  }
+}
+
+.deployment-pulse {
+  animation: pulse-glow 2s infinite;
+}
+
+/* Deployment step animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-animation {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Gradient text effects */
+.gradient-text {
+  @apply bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent;
+}
+
+.gradient-text-wide {
+  @apply bg-gradient-to-r from-blue-400 via-cyan-500 to-blue-600 bg-clip-text text-transparent;
+}
+
+/* Code block container specific styles */
+.code-preview-container {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background-color: #1a1d29;
+}
+
+/* For better visibility of selected code */
+pre::-moz-selection, 
+pre ::selection,
+code::-moz-selection, 
+code ::selection {
+  background-color: rgba(66, 153, 225, 0.3);
+  color: #F7FAFC;
+}
