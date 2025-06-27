@@ -99,7 +99,7 @@ const Landing = () => {
             Build MultiversX Smart Contracts<br />Without Code
           </h1>
           <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">
-            MultiversX builder is a visual smart contract builder for MultiversX Network. Compose secure,
+            MultiversX builder is a visual smart contract builder for MultiversX Network. Compose secure ,
             gas-optimized contracts from pre-built components and deploy with one click.
           </p>
           <motion.button
