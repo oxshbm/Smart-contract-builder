@@ -39,7 +39,8 @@
     "solc": "^0.8.19",
     "sonner": "^1.7.1",
     "tailwind-merge": "^2.5.5",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "wouter": "^3.9.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
