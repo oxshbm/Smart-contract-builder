@@ -52,7 +52,7 @@ multiversx-sc-scenario = "0.43.4"
       
       // Run the compilation
       // Note: This requires Rust and MultiversX toolchain to be installed
-      return new Promise((resolve, reject) => {
+      return new Promise<Response>((resolve, reject) => {
         exec(
           'cd ' + contractDir + ' && mxpy contract build',
           { maxBuffer: 5 * 1024 * 1024 }, // 5MB buffer to handle large output
