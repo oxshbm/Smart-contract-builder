@@ -52,10 +52,11 @@ npm run dev
 
 ## 🔐 Environment Configuration
 
-Create a .env file in the project root with the following key configurations:
+Create a `.env` file in the project root with the following key configurations:
 
 bash
 # OpenAI API Configuration
+# Optional: required only for AI Contract Generator page
 OPENAI_API_KEY=your_openai_api_key_here
 # MultiversX Blockchain Configuration
 MULTIVERSX_RPC_ENDPOINT=https://api.multiversx.com
@@ -65,7 +66,8 @@ MULTIVERSX_RPC_ENDPOINT=https://api.multiversx.com
 *Important:*
 - Never commit the .env file to version control
 - Add .env to your .gitignore
-- Provide actual API keys and credentials
+- Visual Builder works without `OPENAI_API_KEY`
+- AI Contract Generator shows "API key needed" when key is missing
 - Keep your sensitive information confidential
 
 ## 💡 Example AI Prompts

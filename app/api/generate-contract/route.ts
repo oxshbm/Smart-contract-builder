@@ -16,7 +16,10 @@ export async function POST(req: NextRequest) {
     const apiKey = process.env.OPENAI_API_KEY;
 
     if (!apiKey) {
-      return NextResponse.json({ error: 'OPENAI_API_KEY environment variable is not set' }, { status: 500 });
+      return NextResponse.json({
+        error: 'API key needed: set OPENAI_API_KEY to use AI Contract Generator. Visual Builder works without it.',
+        code: 'API_KEY_REQUIRED'
+      }, { status: 503 });
     }
 
     const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
@@ -68,7 +71,10 @@ export async function POST(req: NextRequest) {
         errorData = { error: { message: errorText || 'Contract generation failed' } };
       }
       console.error('API error:', errorData);
-      throw new Error(errorData.error?.message || 'Contract generation failed');
+      return NextResponse.json({
+        error: errorData.error?.message || 'Contract generation failed',
+        code: 'UPSTREAM_API_ERROR'
+      }, { status: response.status });
     }
 
     const data = await response.json();
