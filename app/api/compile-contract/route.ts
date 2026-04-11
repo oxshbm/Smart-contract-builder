@@ -7,6 +7,9 @@ import * as path from 'path';
 import * as os from 'os';
 import * as crypto from 'crypto';
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 // This route handles the compilation of Rust code to WASM
 // It requires Rust and the cargo-contract tools to be installed on the server
 export async function POST(req: NextRequest) {
@@ -16,6 +19,13 @@ export async function POST(req: NextRequest) {
     // Validate input
     if (!code) {
       return NextResponse.json({ error: 'Code is required' }, { status: 400 });
+    }
+
+    // Vercel serverless runtime does not provide the MultiversX build toolchain.
+    if (process.env.VERCEL === '1') {
+      return NextResponse.json({
+        error: 'Contract compilation is not available on Vercel runtime. Run compilation in a dedicated backend or CI worker with mxpy installed.'
+      }, { status: 501 });
     }
 
     // Create a temporary directory for the contract
@@ -102,13 +112,10 @@ multiversx-sc-scenario = "0.43.4"
       
       throw processingError;
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Contract compilation error:', error);
     return NextResponse.json({
       error: error.message || 'Failed to compile contract'
     }, { status: 500 });
   }
 }
-
-// Ensure this is a dynamic route
-export const dynamic = 'force-dynamic';

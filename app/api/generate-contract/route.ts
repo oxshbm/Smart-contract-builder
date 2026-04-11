@@ -1,6 +1,9 @@
 // app/api/generate-contract/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
   try {
     const { prompt } = await req.json();
@@ -16,6 +19,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'OPENAI_API_KEY environment variable is not set' }, { status: 500 });
     }
 
+    const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+
     // Prepare the request to the OpenAI API endpoint with improved system prompt
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -24,7 +29,7 @@ export async function POST(req: NextRequest) {
         'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: "gpt-4-turbo", // Use a more capable model if available
+        model,
         messages: [
           {
             role: "system",
@@ -55,7 +60,13 @@ export async function POST(req: NextRequest) {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
+      const errorText = await response.text();
+      let errorData: any = {};
+      try {
+        errorData = JSON.parse(errorText);
+      } catch {
+        errorData = { error: { message: errorText || 'Contract generation failed' } };
+      }
       console.error('API error:', errorData);
       throw new Error(errorData.error?.message || 'Contract generation failed');
     }
@@ -74,6 +85,3 @@ export async function POST(req: NextRequest) {
     }, { status: 500 });
   }
 }
-
-// Ensure this is a dynamic route
-export const dynamic = 'force-dynamic';
