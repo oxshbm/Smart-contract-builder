@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -31,6 +31,7 @@ export default function AIContractGenerator() {
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<StatusState>(nullStatus);
   const [showDeployment, setShowDeployment] = useState(false);
+  const typingIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Cleanup code from API response - removes markdown code blocks
   const cleanupCodeResponse = (code: string) => {
@@ -40,6 +41,50 @@ export default function AIContractGenerator() {
       .trim();
   };
 
+  const stopTypewriter = useCallback(() => {
+    if (typingIntervalRef.current) {
+      clearInterval(typingIntervalRef.current);
+      typingIntervalRef.current = null;
+    }
+  }, []);
+
+  const revealGeneratedCode = useCallback(
+    (code: string) =>
+      new Promise<void>((resolve) => {
+        stopTypewriter();
+
+        const finalCode = cleanupCodeResponse(code);
+        if (!finalCode) {
+          setGeneratedContract('');
+          resolve();
+          return;
+        }
+
+        setGeneratedContract('');
+
+        // Reveal in chunks to simulate real-time generation.
+        const chunkSize = Math.min(16, Math.max(3, Math.ceil(finalCode.length / 260)));
+        let cursor = 0;
+
+        typingIntervalRef.current = setInterval(() => {
+          cursor = Math.min(finalCode.length, cursor + chunkSize);
+          setGeneratedContract(finalCode.slice(0, cursor));
+
+          if (cursor >= finalCode.length) {
+            stopTypewriter();
+            resolve();
+          }
+        }, 22);
+      }),
+    [stopTypewriter]
+  );
+
+  useEffect(() => {
+    return () => {
+      stopTypewriter();
+    };
+  }, [stopTypewriter]);
+
   // Generate Contract Function
   const generateContract = async () => {
     if (!prompt.trim()) {
@@ -48,6 +93,7 @@ export default function AIContractGenerator() {
     }
 
     setIsLoading(true);
+    stopTypewriter();
     setGeneratedContract('');
     setStatus(nullStatus);
     setShowDeployment(false);
@@ -74,7 +120,7 @@ export default function AIContractGenerator() {
       }
 
       if (data.contract) {
-        setGeneratedContract(cleanupCodeResponse(data.contract));
+        await revealGeneratedCode(data.contract);
         toast.success('Contract generated successfully!');
         setStatus({
           type: 'success',
@@ -89,6 +135,7 @@ export default function AIContractGenerator() {
       }
     } catch (error) {
       console.error('Contract generation error:', error);
+      stopTypewriter();
       toast.error('An unexpected error occurred');
       setStatus({
         type: 'error',
@@ -128,6 +175,7 @@ export default function AIContractGenerator() {
   const loadContractLocally = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
+      stopTypewriter();
       const selectedFile = files[0];
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -289,7 +337,7 @@ export default function AIContractGenerator() {
             <CardHeader>
               <CardTitle className="text-xl text-white">Generated Contract</CardTitle>
               <CardDescription className="text-gray-400">
-                MultiversX Rust smart contract code
+                {isLoading ? 'AI is generating code in real time...' : 'MultiversX Rust smart contract code'}
               </CardDescription>
             </CardHeader>
             <CardContent>
