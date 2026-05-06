@@ -283,13 +283,6 @@ export default function AIContractGenerator() {
           AI Smart Contract Generator for MultiversX
         </h1>
         
-        <div className="mb-4 p-4 rounded-lg border border-amber-500/50 bg-amber-900/20 text-amber-200 flex items-start">
-          <AlertCircle className="mr-2 h-5 w-5 mt-0.5" />
-          <span>
-            AI generation needs an API key. If no key is configured, this page will show an "API key needed" message. You can still use the Visual Builder without any API key.
-          </span>
-        </div>
-
         {/* Status Alert */}
         {status.type && (
           <div className={`

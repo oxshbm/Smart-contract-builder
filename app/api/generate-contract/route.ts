@@ -1,10 +1,9 @@
 // app/api/generate-contract/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 
-<<<<<<< HEAD
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-=======
+
 const DEFAULT_GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
 
 function extractGeneratedText(data: any): string {
@@ -23,7 +22,6 @@ function extractGeneratedText(data: any): string {
 function getGeminiErrorMessage(data: any): string {
   return data?.error?.message || 'Contract generation failed';
 }
->>>>>>> 05417ba (ai generator fixes)
 
 export async function POST(req: NextRequest) {
   try {
@@ -37,18 +35,6 @@ export async function POST(req: NextRequest) {
     const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
 
     if (!apiKey) {
-<<<<<<< HEAD
-      return NextResponse.json({
-        error: 'API key needed: set OPENAI_API_KEY to use AI Contract Generator. Visual Builder works without it.',
-        code: 'API_KEY_REQUIRED'
-      }, { status: 503 });
-    }
-
-    const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
-
-    // Prepare the request to the OpenAI API endpoint with improved system prompt
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-=======
       return NextResponse.json(
         {
           error: 'GEMINI_API_KEY environment variable is not set',
@@ -60,58 +46,12 @@ export async function POST(req: NextRequest) {
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/${DEFAULT_GEMINI_MODEL}:generateContent`,
       {
->>>>>>> 05417ba (ai generator fixes)
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-goog-api-key': apiKey,
       },
       body: JSON.stringify({
-<<<<<<< HEAD
-        model,
-        messages: [
-          {
-            role: "system",
-            content: `You are an expert Rust smart contract developer specializing in MultiversX blockchain contracts.
-            
-            Generate a production-ready Rust smart contract based on the user's requirements.
-            
-            # Technical Requirements:
-            1. Write code only, no explanations or documentation outside the code itself
-            2. Use only MultiversX macros and patterns (#[multiversx_sc::contract], etc.)
-            3. Use MultiversX-specific types (ManagedBuffer, BigUint, TokenIdentifier, etc.)
-            4. Include proper error handling with require! macros
-            5. Implement security best practices for MultiversX contracts
-            6. Include helpful inline comments to explain complex logic
-            
-            # Output Format:
-            Return ONLY the raw Rust code with NO markdown formatting, NO code blocks with triple backticks with the rust language specifier, etc.
-            Just provide the pure Rust code for a MultiversX smart contract.`
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        max_tokens: 4000,  // Increased token limit for more complete contracts
-        temperature: 0.5   // Lower temperature for more consistent outputs
-      })
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      let errorData: any = {};
-      try {
-        errorData = JSON.parse(errorText);
-      } catch {
-        errorData = { error: { message: errorText || 'Contract generation failed' } };
-      }
-      console.error('API error:', errorData);
-      return NextResponse.json({
-        error: errorData.error?.message || 'Contract generation failed',
-        code: 'UPSTREAM_API_ERROR'
-      }, { status: response.status });
-=======
         systemInstruction: {
           parts: [
             {
@@ -139,7 +79,6 @@ Technical requirements:
           maxOutputTokens: 4096,
         },
       }),
->>>>>>> 05417ba (ai generator fixes)
     }
     );
 
@@ -172,9 +111,3 @@ Technical requirements:
     );
   }
 }
-<<<<<<< HEAD
-=======
-
-// Ensure this is a dynamic route
-export const dynamic = 'force-dynamic';
->>>>>>> 05417ba (ai generator fixes)
